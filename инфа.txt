@@ -1,0 +1,23 @@
+var foo = {1: [1, 2, 3]};
+localStorage.setItem('foo', JSON.stringify(foo));
+var fooFromLS = JSON.parse(localStorage.getItem('foo'));
+
+
+try {
+    localStorage.setItem('foo', 'bar');
+} catch (e) {
+    if (e == QUOTA_EXCEEDED_ERR) {
+        alert('Локальное хранилище переполнено');
+    }
+}
+
+
+
+
+Important note:
+
+User JavaScript runs on the global scope, meaning everything that is declared in a script will be shared with the Web page.
+As such, it is recommended to wrap your script with an anonymous function to protect the script's own data. See the following example.
+(function ()
+{ /* user script code */
+  })();

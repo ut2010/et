@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<widget xmlns="http://www.w3.org/ns/widgets" id="http://www.example.org/helloworld">
+	<name>T</name>
+	<description>Not a simple hello world example</description>
+  	<author href="yourURL" email="yourEMail">MaxMal, version 0.2</author>
+  	<icon src="icons/hello.png"/>
+</widget>
