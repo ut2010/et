@@ -3,7 +3,20 @@ window.addEventListener("load", function() {    // TODO: разобаться с
     var button;
     createButton();     // TODO: некрасиво, в ф-ии изменяется глобальная переменная, может передать ее по ссылке
 
-
+	if(widget.preferences.currentGroup != undefined)
+	{
+		l("1");
+		saveCurrentGroupTabs();
+    	closeAllTabs();	
+    	widget.preferences.currentGroup = 'one';   // Текущая активная группа
+    	openGroup(widget.preferences.currentGroup);
+	}
+	else
+	{
+		l("2");
+		widget.preferences.currentGroup = 'one';   // Текущая активная группа
+    	openGroup(widget.preferences.currentGroup);	
+	}
 
 
     //saveCurrentGroupTabs();
@@ -88,7 +101,7 @@ function setCurrentGroup(item)
 {
     if (widget.preferences[item.name]==undefinite)     // если создается новая группа
     {
-        widget.preferences[item.name] = [{"url":"http://www.google.ru","pos":1}];    // то создаем переменную с пустым объектом, без вкладок
+        widget.preferences[item.name] = JSON.stringify([{"url":"http://www.google.ru","pos":1}]);    // то создаем переменную со стартовой вкладкой
     }
     widget.preferences.currentGroup = item.name;   // устанавливаем указатель на текущую группу
 }

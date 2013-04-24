@@ -7,15 +7,16 @@ function createMenuItem()
 {
     var groups = new Array()
     groups[0] = {'name': 'one'};
-    groups[1] = {'name': 'two'};
+    //groups[1] = {'name': 'two'};
     widget.preferences.groups =  JSON.stringify(groups);
+    widget.preferences.one =  JSON.stringify([{"url":"http://www.google.ru","pos":1}]);
 }
 
 
 
 
 $(function(){
-    //createMenuItem();
+    createMenuItem();
 
     // Строим меню при открытии popup
     buildMenu();
