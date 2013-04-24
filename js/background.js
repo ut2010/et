@@ -3,32 +3,14 @@ window.addEventListener("load", function() {    // TODO: разобаться с
     var button;
     createButton();     // TODO: некрасиво, в ф-ии изменяется глобальная переменная, может передать ее по ссылке
 
-	if(widget.preferences.currentGroup != undefined)
-	{
-		l("1");
-		saveCurrentGroupTabs();
-    	closeAllTabs();	
-    	widget.preferences.currentGroup = 'one';   // Текущая активная группа
-    	openGroup(widget.preferences.currentGroup);
-	}
-	else
-	{
-		l("2");
-		widget.preferences.currentGroup = 'one';   // Текущая активная группа
-    	openGroup(widget.preferences.currentGroup);	
-	}
+    l("Start");
+
+    createMenuItem();
+    closeAllTabs();
+    openGroup(widget.preferences.currentGroup);
 
 
-    //saveCurrentGroupTabs();
-    //closeAllTabs();
-    //widget.preferences.currentGroup = 'one';   // Текущая активная группа
-    //openGroup(widget.preferences.currentGroup);
-
-	
-	
-	
-
-    // TODO: Проверка на первый запуск
+	// TODO: Проверка на первый запуск
     // Сообщить о сохранении открытых вкладок в группу "Придумать название" и сразу предложить изменить имя группы.
     // Сделать возможность отката последнего действия пользователя
 
@@ -41,6 +23,17 @@ window.addEventListener("load", function() {    // TODO: разобаться с
     //saveCurrentTabState();
 
 }, false);
+
+// Временная ф-ия для заполнения при обновлении или установке плагина
+function createMenuItem()
+{
+    l("createMenuItem");
+    var groups = new Array()
+    groups[0] = {'name': 'one'};
+    widget.preferences.groups =  JSON.stringify(groups);
+    widget.preferences.one =  JSON.stringify([{"url":"http://www.google.ru","pos":1}]);
+    widget.preferences.currentGroup = "one";
+}
 
 // Ф-ия получает текущее состояние вкладок,
 // сохраняет его, и сохраняет предыдущее состояние вкладок
@@ -88,28 +81,35 @@ function closeAllTabs()
 function addGroupItem(item)
 {
     // Сохраняем в список групп
-    var group = JSON.parse(widget.preferences.groups);
-    group.push(item);
-    widget.preferences.groups = JSON.stringify(group);
+    var groups = JSON.parse(widget.preferences.groups);
+    groups.push(item);
+    widget.preferences.groups = JSON.stringify(groups);
     saveCurrentGroupTabs();
     closeAllTabs();
-    setCurrentGroup(item);
+    createNewGroup(item);
 }
 
 // Устанавливает текущую группу
 function setCurrentGroup(item)
 {
-    if (widget.preferences[item.name]==undefinite)     // если создается новая группа
-    {
-        widget.preferences[item.name] = JSON.stringify([{"url":"http://www.google.ru","pos":1}]);    // то создаем переменную со стартовой вкладкой
-    }
+//   l(item);
+//    if (widget.preferences[item] == undefined)     // если создается новая группа
+//    {
+//        widget.preferences[item] = JSON.stringify([{"url":"http://www.google.ru","pos":1}]);    // то создаем переменную со стартовой вкладкой
+//    }
+    widget.preferences.currentGroup = item.name;   // устанавливаем указатель на текущую группу
+}
+
+function createNewGroup(item)
+{
+    widget.preferences[item.name] = JSON.stringify([{"url":"http://www.google.ru","pos":1}]);    // то создаем переменную со стартовой вкладкой
     widget.preferences.currentGroup = item.name;   // устанавливаем указатель на текущую группу
 }
 
 
 function openGroup(item)
 {
-    var tabs = JSON.parse(widget.preferences['one']);
+    var tabs = JSON.parse(widget.preferences['a93']);
     for (var x=0; x<tabs.length; x++)
     {
         opera.extension.tabs.create({url: tabs[x].url});

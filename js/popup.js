@@ -2,42 +2,36 @@
 // TODO: back определяет произошло ли изменение и выполняет смену группы, либо создание новой
 // TODO: список должен формироваться на js
 
-// Временная ф-ия для заполнения
-function createMenuItem()
-{
-    var groups = new Array()
-    groups[0] = {'name': 'one'};
-    //groups[1] = {'name': 'two'};
-    widget.preferences.groups =  JSON.stringify(groups);
-    widget.preferences.one =  JSON.stringify([{"url":"http://www.google.ru","pos":1}]);
-}
+
 
 
 
 
 $(function(){
-    createMenuItem();
+    //createMenuItem();
 
     // Строим меню при открытии popup
     buildMenu();
 
     $(".menu a.v").click(function(){
         $(this).css('color', 'red');
-        opera.extension.bgProcess.saveCurrentGroupTabs();
+        opera.extension.bgProcess.saveCurrentGroupTabs();   // предполагается что текущая группа выбрана
         opera.extension.bgProcess.closeAllTabs();
         var item = {'name': $(this).attr('id')};
+        //var item = $(this).attr('id');
         //$("li.add").after('<p>' + $(this).attr('id') + '</p>');
 
         opera.extension.bgProcess.setCurrentGroup(item);
-        opera.extension.bgProcess.openGroup(item);
+        opera.extension.bgProcess.openGroup({'name': 'a93'});
     });
 
 	$(".menu a.add").click(function(){
         $(this).css('background-color', 'green');
-      var date = Math.floor((Math.random()*1000)+1);
-      $("li.add").before('<li><a class="v" id="'+ date + '" href="#">' + date + '</a></li>');
-      opera.extension.bgProcess.addGroupItem({'name': date});
-      opera.extension.bgProcess.openGroup(widget.preferences.currentGroup);
+        var tempDate = Math.floor((Math.random()*1000)+1);
+        var date = "a" + tempDate;
+        $("li.add").before('<li><a class="v" id="'+ date + '" href="#">' + date + '</a></li>');
+        opera.extension.bgProcess.addGroupItem({'name': date});
+        opera.extension.bgProcess.openGroup(widget.preferences.currentGroup);
 
    });
 	
