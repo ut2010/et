@@ -7,7 +7,7 @@ window.addEventListener("load", function() {    // TODO: разобаться с
 
     createMenuItem();
     closeAllTabs();
-    openGroup(widget.preferences.currentGroup);
+    openGroup();
 
 
 	// TODO: Проверка на первый запуск
@@ -87,6 +87,7 @@ function addGroupItem(item)
     saveCurrentGroupTabs();
     closeAllTabs();
     createNewGroup(item);
+    widget.preferences.currentGroup = item.name;   // устанавливаем указатель на текущую группу
 }
 
 // Устанавливает текущую группу
@@ -103,13 +104,13 @@ function setCurrentGroup(item)
 function createNewGroup(item)
 {
     widget.preferences[item.name] = JSON.stringify([{"url":"http://www.google.ru","pos":1}]);    // то создаем переменную со стартовой вкладкой
-    widget.preferences.currentGroup = item.name;   // устанавливаем указатель на текущую группу
+
 }
 
-
-function openGroup(item)
+ // Открывает вкладки группы, согласно установленному значению currentGroup
+function openGroup()
 {
-    var tabs = JSON.parse(widget.preferences['a93']);
+    var tabs = JSON.parse(widget.preferences[widget.preferences.currentGroup]);
     for (var x=0; x<tabs.length; x++)
     {
         opera.extension.tabs.create({url: tabs[x].url});
