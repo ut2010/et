@@ -72,10 +72,13 @@ function closeAllTabs()
 {
     var tabs = opera.extension.tabs.getAll();
 
-    for (var x=0; x < tabs.length; x++)
+    for (var x=1; x < tabs.length; x++)
     {
         tabs[x].close();
     }
+    var thisTab = opera.extension.tabs.getSelected();
+    thisTab.update({"url":"opera:speeddial"});
+    
 }
 
 function addGroupItem(item)
@@ -88,6 +91,7 @@ function addGroupItem(item)
     closeAllTabs();
     createNewGroup(item);
     widget.preferences.currentGroup = item.name;   // устанавливаем указатель на текущую группу
+    openGroup();
 }
 
 // Устанавливает текущую группу
@@ -111,7 +115,11 @@ function createNewGroup(item)
 function openGroup()
 {
     var tabs = JSON.parse(widget.preferences[widget.preferences.currentGroup]);
-    for (var x=0; x<tabs.length; x++)
+    
+    var thisTab = opera.extension.tabs.getSelected();
+    thisTab.update({"url":tabs[0].url});
+    
+    for (var x=1; x<tabs.length; x++)
     {
         opera.extension.tabs.create({url: tabs[x].url});
     }

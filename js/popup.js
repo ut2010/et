@@ -7,23 +7,29 @@ $(function(){
     // Строим меню при открытии popup
     buildMenu();
 
-//    $(".menu a.v").click(function(){
-//        $(this).css('color', 'red');
-//        opera.extension.bgProcess.saveCurrentGroupTabs();   // предполагается что текущая группа выбрана
-//        opera.extension.bgProcess.closeAllTabs();
-//        var item = {'name': $(this).attr('id')};
-//        opera.extension.bgProcess.setCurrentGroup(item);
-//        opera.extension.bgProcess.openGroup();
-//    });
-
-	$(".menu a.add").click(function(){
+	$("a.v").live("click", function(){
+	//    $("a.v").click(function(){
+	    $(this).css('color', 'red');
+	    opera.extension.bgProcess.saveCurrentGroupTabs();   // предполагается что текущая группа выбрана
+	    opera.extension.bgProcess.closeAllTabs();
+	    var item = {'name': $(this).attr('id')};
+	    opera.extension.bgProcess.setCurrentGroup(item);
+	    opera.extension.bgProcess.openGroup();
+	});
+    
+    
+    $(".menu a.add").click(function(){
         var tempDate = Math.floor((Math.random()*1000)+1);
-        var date = "a" + tempDate;
+        var date = tempDate;
         $("li.add").before('<li><a class="v" id="'+ date + '" href="#">' + date + '</a></li>');
         opera.extension.bgProcess.addGroupItem({'name': date});
-        opera.extension.bgProcess.openGroup();
+        //opera.extension.bgProcess.openGroup();
 
    });
+    
+
+
+	
 
 
 });
