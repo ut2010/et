@@ -32,7 +32,7 @@ function createMenuItem()
     var groups = new Array()
     groups[0] = {'name': 'one'};
     widget.preferences.groups =  JSON.stringify(groups);
-    widget.preferences.one =  JSON.stringify([{"url":"http://www.google.ru","pos":1}]);
+    widget.preferences.one =  JSON.stringify([{"url":"http://www.google.ru","pos":1}, {"url":"http://www.mail.ru","pos":1}]);
     widget.preferences.currentGroup = "one";
 }
 
@@ -68,6 +68,14 @@ function saveCurrentGroupTabs()
     widget.preferences[widget.preferences.currentGroup] = getAllTabs();
 }
 
+function reOpen(item)
+{
+    saveCurrentGroupTabs();   // предполагается что текущая группа выбрана
+    closeAllTabs();
+    setCurrentGroup(item);
+    setTimeout(openGroup, 3000);
+}
+
 // Ф-ия закрывает все открытые вкладки
 function closeAllTabs()
 {
@@ -77,7 +85,7 @@ function closeAllTabs()
     {
     	if(x==0)
     	{
-    		tabs[x].update({"url":"opera:speeddial"});	
+    		tabs[x].update({"url":"opera:speeddial"});
     	}
     	else
     	{
@@ -102,17 +110,13 @@ function addGroupItem(item)
 // Устанавливает текущую группу
 function setCurrentGroup(item)
 {
-//   l(item);
-//    if (widget.preferences[item] == undefined)     // если создается новая группа
-//    {
-//        widget.preferences[item] = JSON.stringify([{"url":"http://www.google.ru","pos":1}]);    // то создаем переменную со стартовой вкладкой
-//    }
+    l("Установил группу");
     widget.preferences.currentGroup = item.name;   // устанавливаем указатель на текущую группу
 }
 
 function createNewGroup(item)
 {
-    widget.preferences[item.name] = JSON.stringify([{"url":"http://www.google.ru","pos":1}]);    // то создаем переменную со стартовой вкладкой
+    widget.preferences[item.name] = JSON.stringify([{"url":"http://www.google.ru","pos":1}]);    // создаем переменную со стартовой вкладкой
 
 }
 
@@ -123,9 +127,7 @@ function openGroup()
     
     //var thisTab = opera.extension.tabs.getSelected();
    // thisTab.update({"url":tabs[0].url});
-    
-	
-	
+
     for (var x=0; x<tabs.length; x++)
     {
     	if(x==0)

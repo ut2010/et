@@ -11,14 +11,20 @@ $(function(){
     $(document).on("click", "a.v", function(event){
 	    if (widget.preferences.currentGroup != $(this).attr('id'))
 	    {
-    		$(this).css('color', 'red');	
-    		opera.extension.bgProcess.saveCurrentGroupTabs();   // предполагается что текущая группа выбрана
-		    opera.extension.bgProcess.closeAllTabs();
-		    var item = {'name': $(this).attr('id')};
-		    opera.extension.bgProcess.setCurrentGroup(item);
-		    opera.extension.bgProcess.openGroup();
+    		$(this).css('color', 'red');
+            var item = {'name': $(this).attr('id')};
+            opera.extension.bgProcess.reOpen(item);
+//            opera.extension.bgProcess.saveCurrentGroupTabs();   // предполагается что текущая группа выбрана
+//		    opera.extension.bgProcess.closeAllTabs();
+
+//                var item = {'name': $(this).attr('id')};
+//		        opera.extension.bgProcess.setCurrentGroup(item);
+//		        opera.extension.bgProcess.openGroup();
+
 	    }
 	});
+
+
     
     $("a.add").click(function(){
         var tempDate = Math.floor((Math.random()*1000)+1);
