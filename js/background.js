@@ -28,6 +28,7 @@ window.addEventListener("load", function() {    // TODO: разобаться с
 function createMenuItem()
 {
     l("createMenuItem");
+    widget.preferences.clear();
     var groups = new Array()
     groups[0] = {'name': 'one'};
     widget.preferences.groups =  JSON.stringify(groups);
@@ -72,13 +73,17 @@ function closeAllTabs()
 {
     var tabs = opera.extension.tabs.getAll();
 
-    for (var x=1; x < tabs.length; x++)
+    for (var x=0; x < tabs.length; x++)
     {
+    	if(x==0)
+    	{
+    		tabs[x].update({"url":"opera:speeddial"});	
+    	}
+    	else
+    	{
         tabs[x].close();
+    	}
     }
-    var thisTab = opera.extension.tabs.getSelected();
-    thisTab.update({"url":"opera:speeddial"});
-    
 }
 
 function addGroupItem(item)
@@ -116,12 +121,23 @@ function openGroup()
 {
     var tabs = JSON.parse(widget.preferences[widget.preferences.currentGroup]);
     
-    var thisTab = opera.extension.tabs.getSelected();
-    thisTab.update({"url":tabs[0].url});
+    //var thisTab = opera.extension.tabs.getSelected();
+   // thisTab.update({"url":tabs[0].url});
     
-    for (var x=1; x<tabs.length; x++)
+	
+	
+    for (var x=0; x<tabs.length; x++)
     {
-        opera.extension.tabs.create({url: tabs[x].url});
+    	if(x==0)
+    	{
+    		l("Работает");
+    		var tabsNew = opera.extension.tabs.getAll();
+			tabsNew[0].update({"url": tabs[x].url});
+    	}
+    	else
+    	{
+        	opera.extension.tabs.create({url: tabs[x].url});
+    	}
     }
 }
 
