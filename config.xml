@@ -2,6 +2,6 @@
 <widget xmlns="http://www.w3.org/ns/widgets" id="http://www.example.org/helloworld">
 	<name>T</name>
 	<description>Not a simple hello world example</description>
-  	<author href="yourURL" email="yourEMail">MaxMal, version 0.3</author>
+  	<author href="yourURL" email="yourEMail">MaxMal, version 0.4</author>
   	<icon src="icons/hello.png"/>
 </widget>

@@ -6,7 +6,7 @@ window.addEventListener("load", function() {    // TODO: разобаться с
     l("Start");
 
     createMenuItem();
-    closeAllTabs();
+    //closeAllTabs();
     openGroup();
 
 
@@ -31,9 +31,13 @@ function createMenuItem()
     widget.preferences.clear();
     var groups = new Array()
     groups[0] = {'name': 'one'};
+    groups[1] = {'name': 'two'};
+    groups[2] = {'name': 'three'};
     widget.preferences.groups =  JSON.stringify(groups);
-    widget.preferences.one =  JSON.stringify([{"url":"http://www.google.ru","pos":1}, {"url":"http://www.mail.ru","pos":1}]);
-    widget.preferences.currentGroup = "one";
+    widget.preferences['one'] =  JSON.stringify([{"url":"http://www.google.ru","pos":1}, {"url":"http://www.mail.ru","pos":1}]);
+    widget.preferences['two'] =  JSON.stringify([{"url":"http://www.ya.ru","pos":1}]);
+    widget.preferences['three'] =  JSON.stringify([{"url":"http://www.rambler.ru","pos":1}]);
+    widget.preferences.currentGroup = 'one';
 }
 
 // Ф-ия получает текущее состояние вкладок,
@@ -55,7 +59,7 @@ function getAllTabs()
         optimizedTabs[x] =
         {
             url: tabs[x].url,
-            pos: tabs[x].position
+            //pos: tabs[x].position
         }
     }
     // TODO: внести проверку на пустые объекты {}
@@ -71,9 +75,9 @@ function saveCurrentGroupTabs()
 function reOpen(item)
 {
     saveCurrentGroupTabs();   // предполагается что текущая группа выбрана
-    closeAllTabs();
+    //closeAllTabs();
     setCurrentGroup(item);
-    setTimeout(openGroup, 3000);
+    openGroup();
 }
 
 // Ф-ия закрывает все открытые вкладки
@@ -101,7 +105,7 @@ function addGroupItem(item)
     groups.push(item);
     widget.preferences.groups = JSON.stringify(groups);
     saveCurrentGroupTabs();
-    closeAllTabs();
+    //closeAllTabs();
     createNewGroup(item);
     widget.preferences.currentGroup = item.name;   // устанавливаем указатель на текущую группу
     openGroup();
@@ -123,24 +127,35 @@ function createNewGroup(item)
  // Открывает вкладки группы, согласно установленному значению currentGroup
 function openGroup()
 {
+    var realTabs = opera.extension.tabs.getAll();
     var tabs = JSON.parse(widget.preferences[widget.preferences.currentGroup]);
-    
-    //var thisTab = opera.extension.tabs.getSelected();
-   // thisTab.update({"url":tabs[0].url});
 
+    if (realTabs.length < tabs.length)
+    {
+        for(var j=0; j<tabs.length - realTabs.length ; j++)
+        {
+            opera.extension.tabs.create({url: "opera:speeddial"});
+        }
+    }
+
+    else
+    {
+        for(var i=0; i<realTabs.length - tabs.length; i++)
+        {
+            realTabs[length-i].close();
+        }
+    }
+//
+    realTabs = opera.extension.tabs.getAll();
     for (var x=0; x<tabs.length; x++)
     {
-    	if(x==0)
-    	{
-    		l("Работает");
-    		var tabsNew = opera.extension.tabs.getAll();
-			tabsNew[0].update({"url": tabs[x].url});
-    	}
-    	else
-    	{
-        	opera.extension.tabs.create({url: tabs[x].url});
-    	}
+		realTabs[x].update({"url": tabs[x].url});
     }
+}
+
+function getNumberTabs(nameGroups)
+{
+    return JSON.parse(widget.preferences[nameGroups]).length;
 }
 
 function createButton()

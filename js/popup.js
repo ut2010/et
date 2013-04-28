@@ -3,12 +3,13 @@
 // TODO: список должен формироваться на js
 
 $(function(){
-
+    opera.extension.bgProcess.saveCurrentGroupTabs();
     // Строим меню при открытии popup
     buildMenu();
 
 
-    $(document).on("click", "a.v", function(event){
+ $(document).on("click", "a.v", function(event){
+//        $("a.v").click(function(){
 	    if (widget.preferences.currentGroup != $(this).attr('id'))
 	    {
     		$(this).css('color', 'red');
@@ -41,7 +42,7 @@ function buildMenu(){
 	var str;
 
 	for (var i = 0; i< menu.length; i++) {
-			str = '<li><a href="#" class="v" id="'+ menu[i].name + '">' + menu[i].name+ '</a></li>';
+			str = '<li><a href="#" class="v" id="'+ menu[i].name + '">' + menu[i].name + ' ' + opera.extension.bgProcess.getNumberTabs(menu[i].name) + '</a></li>';
 			$("li.add").before(str);
 			
 		}
